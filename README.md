@@ -6,7 +6,7 @@
 # Features
   - Login/Sign Up Form
   - Redirect to Browse Page
-  - Browse()
+  - Browse(after the login)
   - Main Movie 
         - Tailer in Background
         - Title & Description
