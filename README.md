@@ -11,6 +11,14 @@
 - Firebase SetUp
 - Deploying our Project
 - Create Sign Up User Account
+- Implement Sign In user API
+- Created Redux store with userSlice
+- Implemented Sign Out
+- Update Profile API
+- Fetch movies from TMDB
+- BugFix: Sign up user displayName and profile picture update
+- BugFix: If the user is not logged in Redirect /browse to Login page and Vice-Versa
+- Unsubsribed to the onAuthStateChanged callback
  
 # Features
   - Login/Sign Up Form

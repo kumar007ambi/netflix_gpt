@@ -4,12 +4,17 @@ import { checkValidData } from ".././utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
+
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -20,7 +25,7 @@ const Login = () => {
     // console.log(password.current.value);
 
     const message = checkValidData(
-      name.current.value,
+      //name.current.value,
       email.current.value,
       password.current.value
     );
@@ -40,7 +45,25 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          console.log(user);
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/60788663?v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
+          //console.log(user);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -57,7 +80,7 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
+          console.log(user)
         })
         .catch((error) => {
           const errorCode = error.code;
