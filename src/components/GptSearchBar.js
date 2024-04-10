@@ -1,26 +1,29 @@
 import { useRef } from "react";
 import lang from "../utils/languageConstant";
 import { useSelector } from "react-redux";
-import openai from "../utils/openai"
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GEMINIAI_KEY } from "../utils/constant";
 
 const GptSearchBar = () => {
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
+  const genAI = new GoogleGenerativeAI(GEMINIAI_KEY);
 
   const handleGptSearchClick = async () => {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     console.log(searchText.current.value);
     // Make an API call to GPT API and get Movie Results
-    const gptQuery =
+    const questionQuery =
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
       ". only give me names of 5 movies, comma seperated like the example result given ahead. Example Result: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya";
 
+    const result = await model.generateContent(questionQuery);
+    const response = await result.response;
 
-    const getResults = await openai.chat.completions.create({
-      messages: [{ role: "user", content:  gptQuery}],
-      model: "gpt-3.5-turbo",
-    });
-    console.log(getResults);
+    //console.log(response.candidates?.[0]?.content?.parts?.[0]?.text);
+    const moviesList=response.candidates?.[0]?.content?.parts?.[0]?.text.split(",");
+    console.log(moviesList)
   };
 
   return (
