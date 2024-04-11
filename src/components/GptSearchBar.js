@@ -1,13 +1,28 @@
 import { useRef } from "react";
 import lang from "../utils/languageConstant";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { GEMINIAI_KEY } from "../utils/constant";
+import { API_OPTIONS, GEMINIAI_KEY } from "../utils/constant";
+import { addGptSuggestMovieResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
+  const dispatch = useDispatch();
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
   const genAI = new GoogleGenerativeAI(GEMINIAI_KEY);
+
+  // search movie in TMDB
+  const searchMovieTMDB = async (movie) => {
+    const data = await fetch(
+      "https://api.themoviedb.org/3/search/movie?query=" +
+        movie +
+        "&include_adult=false&language=en-US&page=1",
+      API_OPTIONS
+    );
+    const json = await data.json();
+
+    return json.results;
+  };
 
   const handleGptSearchClick = async () => {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
@@ -21,9 +36,25 @@ const GptSearchBar = () => {
     const result = await model.generateContent(questionQuery);
     const response = await result.response;
 
+    // if (!response.choices) {
+    //  to do error jandling
+    // }
+
     //console.log(response.candidates?.[0]?.content?.parts?.[0]?.text);
-    const moviesList=response.candidates?.[0]?.content?.parts?.[0]?.text.split(",");
-    console.log(moviesList)
+    const moviesList =
+      response.candidates?.[0]?.content?.parts?.[0]?.text.split(",");
+    //console.log(moviesList)
+
+    // ["Andaz Apna Apna", "Hera Pheri", "Chupke Chupke", "Jaane Bhi Do Yaaro", "Padosan"]
+
+    // For each movie I will search TMDB API
+
+    const promiseArray = moviesList.map((movie) => searchMovieTMDB(movie));
+    // [Promise, Promise, Promise, Promise, Promise]
+
+    const tmdbResults = await Promise.all(promiseArray);
+    console.log(tmdbResults);
+    dispatch(addGptSuggestMovieResult({ movieNames: moviesList, movieResults: tmdbResults }));
   };
 
   return (
