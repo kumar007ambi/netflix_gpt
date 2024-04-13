@@ -36,13 +36,13 @@
 - TMDB Image CDN URL
 - Made the Browsre page amazing with Tailwind CSS
 - usePopularMovies Custom hook
-- GPT Search Page
-- GPT Search Bar
+- GEMINIAI Search Page
+- GEMINIAI Search Bar
 - (BONUS) Multi-language Feature in our App)
-- Get Open AI Api Key 
-- Gpt Search API Call
-- fetched gptMoviesSuggestions from TMDB
-- created gptSlice added data
+- Get GEMINIAI Api Key 
+- GEMINIAI Search API Call
+- fetched geminiaiMoviesSuggestions from TMDB
+- created geminiaiSlice added data
 - Resused Movie List component to make movie suggestion container
 - Memoization
 - Added .env file

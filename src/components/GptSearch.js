@@ -6,14 +6,14 @@ import { THEME_BACKGROUND } from "../utils/constant";
 const GptSearch = () => {
   return (
     <>
-      <div className="absolute -z-10">
+      <div className="fixed -z-10 ">
         <img
-          className="h-screen object-cover"
+          className="min-h-screen object-cover"
           src={THEME_BACKGROUND}
           alt="background"
         />
       </div>
-      <div className="pt-[30%] md:p-0">
+      <div className="">
         <GptSearchBar />
         <GptMovieSuggestion />
       </div>
