@@ -25,4 +25,5 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "spanish", name: "Spanish" },
 ];
 
-export const GEMINIAI_KEY=process.env.REACT_APP_GEMINIAI_KEY;
+export const GEMINIAI_KEY = import.meta.env.VITE_GEMINIAI_KEY;
+export const OPENAI_KEY = import.meta.env.VITE_OPENAI_KEY;
