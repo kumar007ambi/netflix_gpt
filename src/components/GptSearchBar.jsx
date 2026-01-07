@@ -9,7 +9,6 @@ const GptSearchBar = () => {
   const dispatch = useDispatch();
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
-  const ai = new GoogleGenAI({ apiKey: GEMINIAI_KEY });
 
   // search movie in TMDB
   const searchMovieTMDB = async (movie) => {
@@ -25,6 +24,15 @@ const GptSearchBar = () => {
   };
 
   const handleGptSearchClick = async () => {
+    if (!GEMINIAI_KEY) {
+       // Handle missing API key gracefully
+       console.error("Gemini API Key is missing");
+       alert("Gemini API Key is missing. Please check your Vercel environment variables.");
+       return;
+    }
+
+    const ai = new GoogleGenAI({ apiKey: GEMINIAI_KEY });
+
     console.log(searchText.current.value);
     // Make an API call to GPT API and get Movie Results
     const questionQuery =
