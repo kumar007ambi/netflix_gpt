@@ -25,5 +25,5 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "spanish", name: "Spanish" },
 ];
 
-export const GEMINIAI_KEY = import.meta.env.VITE_GEMINIAI_KEY;
-export const OPENAI_KEY = import.meta.env.VITE_OPENAI_KEY;
+export const GEMINIAI_KEY = import.meta.env.VITE_GEMINIAI_KEY || 'NOT_SET';
+export const OPENAI_KEY = import.meta.env.VITE_OPENAI_KEY || 'NOT_SET';

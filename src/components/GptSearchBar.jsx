@@ -9,7 +9,10 @@ const GptSearchBar = () => {
   const dispatch = useDispatch();
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
-
+   if (GEMINIAI_KEY === 'NOT_SET') {
+  console.error('Environment variables not loaded!');
+  console.log('Available vars:', Object.keys(import.meta.env));
+}
   // search movie in TMDB
   const searchMovieTMDB = async (movie) => {
     const data = await fetch(
